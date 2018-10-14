@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>超市</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+{#    <meta http-equiv="Cache-Control" content="no-siteapp"/>#}
+    {% block t_script %}
+        <link rel="icon" type="image/png" href="#">
+        <link href="{% static 'css/amazeui.min.css' %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
+        <script src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
+        <script src="{% static 'js/time.js' %}"></script>
+        <script src="{% static 'js/popup.mini.js' %}"></script>
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+{% endblock %}
+{% block bottom %}
+    <div style="height: 55px;"></div>
+    <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default sq-foot am-no-layout" id="">
+        <ul class="am-navbar-nav am-cf am-avg-sm-5">
+            <li>
+                <a href="{% url 'index' %}" class="curr">
+                    <span class="am-icon-home"></span>
+                    <span class="am-navbar-label">首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="">
+                    <span class="am-icon-comments"></span>
+                    <span class="am-navbar-label">动态</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'shopping:shopping' %}" class="">
+                    <span class="am-icon-shopping-cart"></span>
+                    <span class="am-navbar-label">购物车</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'allorder:order' %}" class="">
+                    <span class="am-icon-file-text"></span>
+                    <span class="am-navbar-label">订单</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'user:center' %}" class="">
+                    <span class="am-icon-user"></span>
+                    <span class="am-navbar-label">我的</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+{% block b_script %}
+    <script type='text/javascript'>
+        (function () {
+            new PopUp_api({el: '.index-qd', html: '.qd-box'});
+        })()
+    </script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/amazeui.min.js' %}"></script>
+{% endblock %}
+{% block foot_js %}
+{% endblock %}
+</body>
+</html>

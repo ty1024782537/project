@@ -1,0 +1,68 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block t_script %}
+    <link href="{% static 'css/amazeui.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
+    <script src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
+    <script src="{% static 'js/time.js' %}"></script>
+{% endblock %}
+{% block body %}
+    <header data-am-widget="header" class="am-header am-header-default sq-head ">
+        <div class="am-header-left am-header-nav">
+            <a href="javascript:history.back()" class="">
+                <i class="am-icon-chevron-left"></i>
+            </a>
+        </div>
+        <h1 class="am-header-title">
+            <a href="" class="">零食飞速</a>
+        </h1>
+    </header>
+    <div style="height: 49px;"></div>
+    <div class="school">您当前位于：江西现代职业技术学院</div>
+    <div class="content-list">
+        <div class="list-left" style="top: 90px;">
+            <ul>
+                <li><a href="">学生公寓</a></li>
+                <li class="current"><a href="">教学楼</a></li>
+                <li><a href="">食堂</a></li>
+            </ul>
+        </div>
+        <div class="list-right" style="padding-top: 50px;">
+            <ul data-am-widget="gallery"
+                class="am-gallery am-avg-sm-2 am-avg-md-2 am-avg-lg-4 am-gallery-default am-no-layout">
+                <li>
+                    <div class="am-gallery-item">
+                        <a href="{% url 'shop:store' %}" class="">
+                            <img src=" {% static 'images/shop1.png' %}">
+                            <h3 class="am-gallery-title">七米设计零食屋</h3>
+                        </a>
+                        <i class="speed-xin">营业中</i>
+                    </div>
+                </li>
+                <li>
+                    <div class="am-gallery-item">
+                        <a href="#" class="">
+                            <img src="{% static 'images/shop2.png' %} ">
+                            <h3 class="am-gallery-title">琳琅的店</h3>
+                        </a>
+                        <i class="speed-xin">营业中</i>
+                    </div>
+                </li>
+                <li>
+                    <div class="am-gallery-item">
+                        <a href="#" class="">
+                            <img src=" {% static 'images/shop3.png' %}">
+                            <h3 class="am-gallery-title">小米妈妈的店</h3>
+                        </a>
+                        <i class="speed-xin">营业中</i>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block  b_script %}
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/amazeui.min.js' %}"></script>
+{% endblock %}
+

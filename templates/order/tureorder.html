@@ -1,0 +1,110 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block t_script %}
+    <link href="{% static 'css/amazeui.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+{% block body %}
+    <header data-am-widget="header" class="am-header am-header-default sq-head ">
+        <div class="am-header-left am-header-nav">
+            <a href="javascript:history.back()" class="">
+                <i class="am-icon-chevron-left"></i>
+            </a>
+        </div>
+        <h1 class="am-header-title">
+            <a href="" class="">提交订单</a>
+        </h1>
+    </header>
+    <div style="height: 49px;"></div>
+    <form method="post" action="" id="forms">
+        {% csrf_token %}
+        {% if receivingAddress %}
+            <div class="order-name">
+                <a href="{% url 'allorder:gladdress' %}">
+                    <input type="hidden" id="address_id" name="address_id" value="{{ receivingAddress.pk }}">
+                    <p class="order-tele">{{ receivingAddress.name }}&nbsp;&nbsp;&nbsp;{{ receivingAddress.phone }}</p>
+                    <p class="order-add">
+                        {{ receivingAddress.hcity }}{{ receivingAddress.hproper }}{{ receivingAddress.harea }}{{ receivingAddress.detailed_description }}
+                    </p>
+                </a>
+                <i class="am-icon-angle-right"></i>
+            </div>
+        {% else %}
+            <div class="add-address">
+                <a href="{% url 'allorder:address' %}">+新建收货地址</a>
+                <i class="am-icon-angle-right"></i>
+            </div>
+        {% endif %}
+        <div style="background: #eee; height: 10px;"></div>
+
+        <ul class="shopcart-list" style="padding-bottom: 0;" id="sku_id">
+            {% for foo in order_goods %}
+                <li>
+                    <img src="{{ MEDIA_URL }}{{ foo.logo_address }}" class="shop-pic"/>
+                    <div class="order-mid">
+                        <input type="hidden" class="sku_id" name="sku_id" value="{{ foo.id }}">
+                        <div class="tit">{{ foo.goods_name }}</div>
+                        <div class="order-price">￥{{ foo.goods_price }} <i>X{{ foo.count }}</i></div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <ul class="order-infor">
+            <li class="order-infor-first">
+                <span>商品总计：</span>
+                ￥<i id="total_money">{{ total_money }}</i>
+            </li>
+            <li class="order-infor-first">
+                <span>配送方式：</span>
+                <i>
+                    <select name="transport" id="transport">
+                        {% for trans in hauling %}
+                            <option value="{{ trans.pk }}" data-value="{{ trans.money }}">
+                                {{ trans.hauling_name }}--{{ trans.money }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </i>
+            </li>
+        </ul>
+        <div style="background: #eee; height: 10px;"></div>
+        <textarea placeholder="备注说明" class="bz-infor"></textarea>
+        <div style="background: #eee; height: 10px;"></div>
+        <div style="height: 55px;"></div>
+        <div class="shop-fix">
+            <div class="order-text">
+                应付总额：￥<span id="total_money_text">{{ total_money }}</span>
+            </div>
+            <a href="#" class="js-btn">提交订单</a>
+        </div>
+    </form>
+{% endblock %}
+{% block b_script %}
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/amazeui.min.js' %}"></script>
+    <script>
+        $(function () {
+            $('#transport').on('change', function () {
+                var select = $(this).find(":selected");
+                var h_m = select.attr('data-value');
+                var total_money = $('#total_money').text();
+                var count = parseFloat(h_m) + parseFloat(total_money);
+                {#console.debug(count);#}
+                $('#total_money_text').text(count);
+            });
+            $('.js-btn').on('click', function () {
+                {#form表单提交数据#}
+                var forms = $("#forms").serialize();
+                $.post('{% url "allorder:tureorder" %}', forms, function (data) {
+                    if (data.error == 0) {
+                        alert('下单成功!');
+                        location.href="{% url 'allorder:endorder' %}?order_sn=" + data.order_sn;
+                    }else {
+                        alert('下单失败!')
+                    }
+                })
+            })
+        })
+    </script>
+{% endblock %}
+

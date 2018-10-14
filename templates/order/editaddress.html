@@ -1,0 +1,163 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block t_script %}
+    <link href="{% static 'css/amazeui.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/amazeui.min.js' %}"></script>
+    <script src="{% static 'js/area.js' %}"></script>
+    <script src="{% static 'js/common.js' %}"></script>
+    <script src="{% static 'js/Popt.js' %}"></script>
+    <script src="{% static 'js/cityJson.js' %}"></script>
+    <script src="{% static 'js/citySet.js' %}"></script>
+    <style type="text/css">
+        ._citys {
+            width: 100%;
+            height: 100%;
+            display: inline-block;
+            position: relative;
+        }
+
+        ._citys span {
+            color: #56b4f8;
+            height: 15px;
+            width: 15px;
+            line-height: 15px;
+            text-align: center;
+            border-radius: 3px;
+            position: absolute;
+            right: 1em;
+            top: 10px;
+            border: 1px solid #56b4f8;
+            cursor: pointer;
+        }
+
+        ._citys0 {
+            width: 100%;
+            height: 34px;
+            display: inline-block;
+            border-bottom: 2px solid #56b4f8;
+            padding: 0;
+            margin: 0;
+        }
+
+        ._citys0 li {
+            float: left;
+            height: 34px;
+            line-height: 34px;
+            overflow: hidden;
+            font-size: 15px;
+            color: #888;
+            width: 80px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .citySel {
+            background-color: #56b4f8;
+            color: #fff !important;
+        }
+
+        ._citys1 {
+            width: 100%;
+            height: 80%;
+            display: inline-block;
+            padding: 10px 0;
+            overflow: auto;
+        }
+
+        ._citys1 a {
+            height: 35px;
+            display: block;
+            color: #666;
+            padding-left: 6px;
+            margin-top: 3px;
+            line-height: 35px;
+            cursor: pointer;
+            font-size: 13px;
+            overflow: hidden;
+        }
+
+        ._citys1 a:hover {
+            color: #fff;
+            background-color: #56b4f8;
+        }
+
+        .ui-content {
+            border: 1px solid #EDEDED;
+        }
+
+        li {
+            list-style-type: none;
+        }
+
+        ._citys {
+            background: white !important;
+        }
+    .errorinfo{
+        color: red;
+    }
+
+    </style>
+{% endblock %}
+{% block body %}
+    <header data-am-widget="header" class="am-header am-header-default sq-head ">
+        <div class="am-header-left am-header-nav">
+            <a href="javascript:history.back()" class="">
+                <i class="am-icon-chevron-left"></i>
+            </a>
+        </div>
+        <h1 class="am-header-title">
+            <a href="" class="">新增收货地址</a>
+        </h1>
+    </header>
+    <div style="height: 60px;"></div>
+    <form method="post" action="" id="forms">
+        {% csrf_token %}
+        <ul class="address">
+            <li>
+                <span>地址选择:</span><span id="city" style="color:#d7d7d7;width:20rem">选择地址</span>
+            </li>
+            <li id="address" class="errorinfo"></li>
+            <li><input type="text" name="detailed_description" value="{{ ress.detailed_description }}" class="add-input" /></li>
+            <li id="detailed_description" class="errorinfo"></li>
+            <li><input type="text" name="name" value="{{ ress.name }}" class="add-input" placeholder="收货人姓名"/></li>
+            <li id="name" class="errorinfo"></li>
+            <li><input type="text" name="phone" value="{{ ress.phone }}" class="add-input" placeholder="电话"/></li>
+            <li id="phone" class="errorinfo"></li>
+        </ul>
+        <div class="moren">
+            <label class="am-checkbox am-warning">
+                <input type="checkbox" name="is_address" checked="checked" value="1" data-am-ucheck>设为默认
+            </label>
+        </div>
+        <input type="button" class="login-btn" value="确认提交">
+    </form>
+{% endblock %}
+{% block b_script %}
+    <script type="text/javascript">
+        $(function () {
+            $("#city").click(function (e) {
+                SelCity(this, e);
+            });
+            $('.login-btn').on('click', function () {
+                $('.errorinfo').html('');
+                var data = $("#forms").serialize();
+                $.post('{% url "allorder:editaddress" %}', data, function (data) {
+                    if (data.error == 0) {
+                        //成功返回订单确认页面
+                        history.go(-1)
+                    } else {
+                        for (var key in data.errors) {
+                            if (key == 'phone' || key == "name" || key == "detailed_description") {
+                                $("#" + key).text(data.errors[key][0]);
+                            } else {
+                                $("#address").text(data.errors[key][0]);
+                            }
+                        }
+                    }
+                })
+            })
+        });
+    </script>
+{% endblock %}

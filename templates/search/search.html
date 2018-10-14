@@ -1,0 +1,65 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block t_script %}
+    <link href="{% static 'css/amazeui.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
+    <script src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
+    <script>
+        function changeImage() {
+            document.getElementById("imgflag").src = "images/redherat.png";
+        }
+    </script>
+
+    <style>
+        .am-slider-default .am-control-nav {
+            text-align: center;
+        }
+
+        .am-slider-default .am-control-nav li a.am-active {
+            background: #cb2527;
+        }
+
+        .am-slider-default .am-control-nav li a {
+            border: 0;
+            width: 10px;
+            height: 10px;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <header data-am-widget="header" class="am-header am-header-default sq-head ">
+        <div class="am-header-left am-header-nav">
+            <a href="javascript:history.back()" class="">
+                <i class="am-icon-chevron-left"></i>
+            </a>
+        </div>
+        <h1 class="am-header-title">
+            <a href="" class="">查询商品</a>
+        </h1>
+    </header>
+    <div style="height: 49px;"></div>
+    <!--图片轮换-->
+    <div class="am-slider am-slider-default" data-am-flexslider id="demo-slider-0">
+        {% if query %}
+            <ul class="list-pro" style="margin-top: 20px">
+                {% for result in page %}
+                    <li>
+                        <a href="{% url 'goods:detail' result.object.pk %}"><img
+                                src="{{ MEDIA_URL }}{{ result.object.logo_address }}" class="list-pic1"/></a>
+                        <div class="shop-list-mid" style="width: 65%;">
+                            <div class="tit">
+                                <a href="{% url 'goods:detail' result.object.pk %}">
+                                    {{ result.object.goods_spu.goods_spu_name }}{{ result.object.goods_name }}
+                                </a>
+                            </div>
+                            <div class="am-gallery-desc">￥{{ result.object.goods_price }}</div>
+                            <p>销量：{{ result.object.goods_sales }}件</p>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li>没有找到您搜索的产品！</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+{% endblock %}

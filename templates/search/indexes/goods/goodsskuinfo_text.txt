@@ -1,0 +1,3 @@
+{{object.goods_name}}
+{{object.goods_intro}}
+{{object.goods_spu.category_intro}}

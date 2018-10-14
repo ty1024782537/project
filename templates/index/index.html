@@ -1,0 +1,127 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body %}
+    <header data-am-widget="header" class="am-header am-header-default sq-head1">
+        <div class="am-header-left am-header-nav">
+            <a href="#" class="" style="color: #fff;">
+                <img src="{% static 'images/city.png' %}"/>
+                <p style="font-size: 12px; margin-top: -35px;">南昌</p>
+            </a>
+        </div>
+        <h1 class="am-header-title1">
+            <div class="search-box">
+                <a href="#" class="index-search">南昌大学前湖校区</a>
+            </div>
+        </h1>
+        <div class="am-header-right am-header-nav">
+            <a href="#" class="">
+                <div class="messgae"><span>10</span></div>
+            </a>
+        </div>
+    </header>
+    <div style="height: 49px;"></div>
+    <!--图片轮换-->
+    <div class="am-slider am-slider-default" data-am-flexslider id="demo-slider-0">
+        <ul class="am-slides">
+            {% for foo in cast %}
+                <li><img src="{% static 'media/' %}{{ foo.image_address }}"/></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!--导航-->
+    <ul class="sq-nav">
+        <li>
+            <div class="am-gallery-item">
+                <a href="#" class="">
+                    <img src="{% static 'images/icon.png' %}"/>
+                    <p>充值</p>
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="am-gallery-item">
+                <a href="javascript:;" class="index-qd">
+                    <img src="{% static 'images/icon1.png' %}"/>
+                    <p>签到</p>
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="am-gallery-item">
+                <a href="#" class="">
+                    <img src="{% static 'images/icon2.png' %}"/>
+                    <p>红包</p>
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="am-gallery-item">
+                <a href="" class="">
+                    <img src="{% static 'images/icon3.png' %}"/>
+                    <p>即将上线</p>
+                </a>
+            </div>
+        </li>
+    </ul>
+    <ul class="sq-nav1">
+        <li>
+            <div class="am-gallery-item">
+                <a href="{% url 'shop:shop' %}" class="">
+                    <img src="{% static 'images/icon4.png' %}"/>
+                    <p>零食飞速</p>
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="am-gallery-item">
+                <a href="{% url 'goods:index' 0 %}" class="">
+                    <img src="{% static 'images/icon5.png' %}"/>
+                    <p>超市</p>
+                </a>
+            </div>
+        </li>
+
+    </ul>
+    <div class="h-line"></div>
+    <!--不规则展示-->
+    <div class="index-product">
+        {% for foo in goodsactivity %}
+            <div class="index-pro-lf"><a href="{{ foo.url_address }}"><img
+                    src="{% static 'media/' %}{{ foo.image_address }}"/></a></div>
+        {% endfor %}
+        <div class="index-pro-lr"><a href=""><img src="{% static 'images/s2.png' %}"/></a></div>
+    </div>
+    <div class="product-bot">
+        <div class="product-bot-lf"><a href=""><img src="{% static 'images/s3.png' %}"/></a></div>
+        <div class="product-bot-lr">
+            <div class="top"><a href=""><img src="{% static 'images/s4.png' %}"/></a></div>
+            <div class="bot">
+                <div class="bot-lf"><a href=""><img src="{% static 'images/s5.png' %}"/></a></div>
+                <div class="bot-lr"><a href=""><img src="{% static 'images/s6.png' %}"/></a></div>
+            </div>
+        </div>
+    </div>
+    <!--不规则展示-->
+    <div class="h-line"></div>
+    <!-- 特色专区-->
+    {% for foo in activity %}
+        <div class="sq-title">
+            <img src="{% static 'images/ts.png' %}" width="26"/>
+            {{ foo.active_zone_name }}
+        </div>
+        <ul data-am-widget="gallery"
+            class="am-gallery pro-list am-avg-sm-2 am-avg-md-2 am-avg-lg-4 am-gallery-default">
+            {% for fo in foo.goodsactivezone_set.all %}
+                <li>
+                    <div class="am-gallery-item">
+                        <a href="{% url 'goods:detail' fo.goods_sku.id %}" class="">
+                            <img src="{{ MEDIA_URL }}{{ fo.goods_sku.logo_address }}"/>
+                            <h3 class="am-gallery-title">{{ fo.goods_sku.goods_name }}</h3>
+                            <div class="am-gallery-desc">￥{{ fo.goods_sku.goods_price }}</div>
+                        </a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block t_script %}
+    <link  href="{% static 'css/amazeui.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link  href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
+    <script src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
+    <script src="{% static 'js/date.js' %}"></script>
+    <script src="{% static 'js/iscroll.js' %}"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#beginTime').date();
+            $('#endTime').date({theme: "datetime"});
+        });
+    </script>
+{% endblock %}
+{% block body %}
+    <header data-am-widget="header" class="am-header am-header-default sq-head ">
+        <div class="am-header-left am-header-nav">
+            <a href="javascript:history.back()" class="">
+                <i class="am-icon-chevron-left"></i>
+            </a>
+        </div>
+        <h1 class="am-header-title">
+            <a href="" class="">立即支付</a>
+        </h1>
+    </header>
+    <div style="height: 49px;"></div>
+    <h5 class="order-tit">收货人信息</h5>
+    <div class="order-name">
+            <p class="order-tele">{{ orderinfo.receiver }}&nbsp;&nbsp;&nbsp;{{ orderinfo.receiver_phone }}</p>
+            <p class="order-add">{{ orderinfo.address }}</p>
+        <i class="am-icon-angle-right"></i>
+    </div>
+    <div style="background: #eee; height: 10px;"></div>
+    <h5 class="order-tit">确认订单信息</h5>
+    <ul class="shopcart-list" style="padding-bottom: 0; margin-top: 0;">
+    {% for ordergood in ordergoods %}
+        <li>
+            <img src="{{ MEDIA_URL }}{{ ordergood.goods_sku.logo_address }}" class="shop-pic"/>
+            <div class="order-mid">
+                <div class="tit">{{ ordergood.goods_sku.goods_name }}</div>
+                <div class="order-price">￥{{ ordergood.price }} <i>X{{ ordergood.count }}</i></div>
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+    <ul class="order-infor">
+        <li class="order-infor-first">
+            <span>商品总计：</span>
+            <i>￥{{ orderinfo.order_money }}</i>
+        </li>
+        <li class="order-infor-first">
+            <span>运费：{{ orderinfo.transport.hauling_name }}</span>
+            <i>￥{{ orderinfo.transport.money }}</i>
+        </li>
+    </ul>
+
+    <div style="background: #eee; height: 10px;"></div>
+    <textarea placeholder="备注说明" class="bz-infor"></textarea>
+    <div style="background: #eee; height: 10px;"></div>
+    <div style="height: 55px;"></div>
+    <div class="shop-fix">
+        <div class="order-text">
+            应付总额：<span>￥{{ goods_price }}</span>
+        </div>
+        <a href="#" class="js-btn">立即支付</a>
+    </div>
+{% endblock %}
+{% block b_script %}
+{% endblock %}
+
+

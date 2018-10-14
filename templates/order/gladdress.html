@@ -1,0 +1,83 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block t_script %}
+    <link href="{% static 'css/amazeui.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+{% block body %}
+    <header data-am-widget="header" class="am-header am-header-default sq-head ">
+        <div class="am-header-left am-header-nav">
+            <a href="javascript:history.back()" class="">
+                <i class="am-icon-chevron-left"></i>
+            </a>
+        </div>
+        <h1 class="am-header-title">
+            <a href="" class="">管理收货地址</a>
+        </h1>
+        <div class="am-header-right am-header-nav">
+            <a href="{% url 'allorder:address' %}" class="">
+                <i class="am-icon-plus"></i>
+            </a>
+        </div>
+    </header>
+    <div style="height: 49px;"></div>
+    <ul class="address-list">
+        {% for ress in address %}
+            <li {% if ress.is_address == 1 %}
+                class="curr"
+            {% endif %} >
+                <p>收货人：{{ ress.name }}&nbsp;&nbsp;{{ ress.phone }}</p>
+                <p class="order-add1">收货地址：
+                    {{ ress.hcity }}{{ ress.hproper }}{{ ress.harea }}{{ ress.detailed_description }}
+                </p>
+                <hr/>
+                <div class="address-cz">
+                    <label class="am-radio am-warning">
+                        <input type="radio" name="radio3" ress_id='{{ ress.id }}' value="1" data-am-ucheck
+                                {% if ress.is_address == 1 %} checked{% endif %}> 设为默认
+                    </label>
+                    <a href="{% url 'allorder:editaddress' %}?id={{ ress.id }}"><img src="{% static 'images/bj.png' %}" width="18"/>&nbsp;编辑</a>
+                    <b class="is_delete">
+                        <a delete-id='{{ ress.id }}'>删除</a>
+                    </b>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+{% block b_script %}
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/amazeui.min.js' %}"></script>
+    <script>
+        $(function () {
+            $('.address-cz').find(':radio').on('click', function () {
+                var address_id = $(this).attr('ress_id');
+                var data = {
+                    'address_id': address_id,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                };
+                var that = this;
+                $.post('{% url "allorder:gladdress" %}', data, function (data) {
+                    if (data.ok == 1) {
+                        //将所有的curr清除
+                        $(".address-list").find("li").removeClass('curr');
+                        //当前li标签上加上curr
+                        $(that).parents('li').addClass('curr');
+                    }
+                });
+            });
+            $('.is_delete').find('a').on('click', function () {
+                var id = $(this).attr('delete-id');
+                var data = {
+                    'id': id,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                };
+                $.post('{% url "allorder:delete" %}', data, function (data) {
+                    if (data.ok == 1) {
+                        location.reload();
+                    }
+                })
+            });
+        });
+    </script>
+{% endblock %}

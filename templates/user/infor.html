@@ -1,0 +1,72 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body %}
+    <header data-am-widget="header" class="am-header am-header-default sq-head ">
+        <div class="am-header-left am-header-nav">
+            <a href="javascript:history.back()" class="">
+                <i class="am-icon-chevron-left"></i>
+            </a>
+        </div>
+        <h1 class="am-header-title">
+            <a href="" class="">个人资料</a>
+        </h1>
+    </header>
+    <div style="height: 49px;"></div>
+    <form method="post" action="#">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ user.id }}">
+        <ul class="safty1">
+            <li>
+                <i style="margin-top: 25px;">头像</i>
+                <div class="infor-pic">
+                    <img src="{% static 'images/infortx.png' %}"/>
+                </div>
+            </li>
+            <li>
+                <i>昵称</i>
+                <input type="text" class="infor-tele" name="nickname" value="{{ user.nickname }}"/>
+            </li>
+            <li>
+                <i>性别</i>
+                <i class="infor-tele">
+                    <label class="am-radio-inline">
+                        <input type="radio" name="gender" {% if user.gender == 1 %}checked="checked"{% endif %}
+                               value="1" data-am-ucheck>男
+                    </label>
+                    <label class="am-radio-inline">
+                        <input type="radio" name="gender" {% if user.gender == 2 %}checked="checked"{% endif %}
+                               value="2" data-am-ucheck>女
+                    </label>
+                    <label class="am-radio-inline">
+                        <input type="radio" name="gender" {% if user.gender == 3 %}checked="checked"{% endif %}
+                               value="2" data-am-ucheck>保密
+                    </label>
+                </i>
+            </li>
+            <li>
+                <i>生日</i>
+                <input type="date" class="infor-tele" name="birthday" value="{{ user.birthday }}"/>
+            </li>
+        </ul>
+        <div style="height: 10px; background: #efefef;"></div>
+        <ul class="safty1">
+            <li>
+                <i>学校</i>
+                <input type="text" class="infor-tele" name="school_name" value="{{ user.school_name }}"/>
+            </li>
+            <li>
+                <i>位置</i>
+                <input type="text" class="infor-tele" name="address" value="{{ user.address }}" placeholder=""/>
+            </li>
+            <li>
+                <i>故乡</i>
+                <input type="text" class="infor-tele" name="hometown" value="{{ user.hometown }}" placeholder=""/>
+            </li>
+        </ul>
+        <button type="submit" class="login-btn" value="修改">修改</button>
+    </form>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/amazeui.min.js' %}"></script>
+{% endblock %}
+
